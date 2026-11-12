@@ -165,6 +165,11 @@ def tur(e):
     return "diger"
 
 
+def basladi_mi(e, simdi):
+    """Saatli ve başlamış etkinlik: geçmişe dokunulmaz."""
+    return not e["tum_gun"] and e["bas"] <= simdi
+
+
 def gunde_mi(e, gun):
     b, s = gun_basi(gun), gun_basi(gun) + timedelta(days=1)
     return (e["bas"] < s and e["bit"] > b) or (b <= e["bas"] < s)
@@ -172,7 +177,7 @@ def gunde_mi(e, gun):
 
 # ───────────── adım 2: gym ─────────────
 
-def gym_kontrol(tumu, gun_gymleri, gun):
+def gym_kontrol(tumu, gun_gymleri, gun, simdi):
     """(beklenen başlık düzeltmeleri [(etkinlik, yeni başlık)], özet satırı)"""
     if not gun_gymleri:
         return [], "Gym: o gün gym yok"
@@ -192,6 +197,8 @@ def gym_kontrol(tumu, gun_gymleri, gun):
         beklenen = f"Gym ({GYM_SIRA[sira]})"
         if e["baslik"] == beklenen:
             parcalar.append(f"{beklenen} doğru")
+        elif basladi_mi(e, simdi):
+            parcalar.append(f"'{e['baslik']}' başlamış, dokunulmadı (beklenen {beklenen})")
         else:
             duzeltmeler.append((e, beklenen))
             parcalar.append(f"'{e['baslik']}' → '{beklenen}' düzeltilecek")
@@ -246,13 +253,16 @@ def en_uzunlar(adaylar, adet):
     return sorted(secilen)
 
 
-def pencereleri_hesapla(gun_etkinlikleri, gun, simdi):
-    mesgul = mesgul_araliklar(gun_etkinlikleri)
+def pencereleri_hesapla(gun_etkinlikleri, gun, simdi, donmus=()):
+    mesgul = mesgul_araliklar(gun_etkinlikleri) + [(e["bas"], e["bit"]) for e in donmus]
     bas = saat_coz(KALKIS, gun) + timedelta(minutes=HAZIRLIK_DK)
     adaylar = pencere_adaylari(bos_araliklar(bas, saat_coz(TERCIH_BITIS, gun), mesgul),
                                PENCERE_EN_COK_DK)
+    kalan_hak = max(0, 2 - len(donmus))  # donmuş pencereler günün 2 hakkından düşer
     if adaylar:
-        secilen = en_uzunlar(adaylar, 2)
+        secilen = en_uzunlar(adaylar, kalan_hak)
+    elif donmus:
+        secilen = []  # günün penceresi zaten var; geç saate taşma
     else:
         adaylar = pencere_adaylari(bos_araliklar(bas, saat_coz(SON_BITIS, gun), mesgul),
                                    GEC_PENCERE_EN_COK_DK)
@@ -435,11 +445,13 @@ def mevcut_bildirim(ham):
     return bool(varsayilan), sorted((o.get("method"), o.get("minutes")) for o in ozel)
 
 
-def bildirim_eylemleri(dersler, gymler):
+def bildirim_eylemleri(dersler, gymler, simdi):
     eylemler = []
     istekler = [(e, YOL_EV_OKUL_DK if i == 0 else None) for i, e in enumerate(dersler)]
     istekler += [(e, YOL_EV_GYM_DK) for e in gymler]
     for e, dk in istekler:
+        if basladi_mi(e, simdi):
+            continue
         varsayilan, ozel = mevcut_bildirim(e["ham"])
         if dk is not None:
             if ozel != [("popup", dk)]:
@@ -487,6 +499,8 @@ def guvenlik_denetimi(eylemler, etkinlikler, gun, simdi):
         e = adaylar[0]
         if not gunde_mi(e, gun):
             raise GuvenlikHatasi(f"Hedef etkinlik hedef günde değil: {e['baslik']!r}")
+        if basladi_mi(e, simdi):
+            raise GuvenlikHatasi(f"Başlamış etkinliğe dokunulamaz: {e['baslik']!r}")
         t = tur(e)
         if t.startswith("bot"):
             continue
@@ -532,7 +546,8 @@ def planla(ham_etkinlikler, dersler, durum, hafta, gun, simdi):
     for e in bugun:
         turler.setdefault(tur(e), []).append(e)
     bot_liste = sorted(turler.get("bot-liste", []), key=bas_numara)
-    bot_pencere = turler.get("bot-calisma", [])
+    donmus = [e for e in turler.get("bot-calisma", []) if basladi_mi(e, simdi)]  # geçmişe dokunma
+    bot_pencere = [e for e in turler.get("bot-calisma", []) if not basladi_mi(e, simdi)]
     bot_not = turler.get("bot-not", [])
     gymler = turler.get("gym", [])
     ders_etk = turler.get("ders", [])
@@ -550,7 +565,7 @@ def planla(ham_etkinlikler, dersler, durum, hafta, gun, simdi):
         eylemler += baslik_farki(bot_not, [PROGRAM_YOK_BASLIK], gun, f"{ISARET} not")
     else:
         eylemler += baslik_farki(bot_not, [], gun, f"{ISARET} not")
-        duzeltmeler, gym_satiri = gym_kontrol(etkinlikler, gymler, gun)
+        duzeltmeler, gym_satiri = gym_kontrol(etkinlikler, gymler, gun, simdi)
         gym_eylemleri = [guncelle(e, summary=yeni) for e, yeni in duzeltmeler]
 
         b, s = gun_basi(gun), gun_basi(gun) + timedelta(days=1)
@@ -559,8 +574,9 @@ def planla(ham_etkinlikler, dersler, durum, hafta, gun, simdi):
             istenen_pencere = []
             kaynak = "senin koyduğun"
         else:
-            pencereler = pencereleri_hesapla(bugun, gun, simdi)
-            istenen_pencere = pencereler
+            istenen_pencere = pencereleri_hesapla(bugun, gun, simdi, donmus)
+            pencereler = sorted([(max(e["bas"], b), min(e["bit"], s)) for e in donmus]
+                                + istenen_pencere)
             kaynak = "bot"
         toplam = sum(dakika(x, y) for x, y in pencereler)
         liste, butce = liste_kur(dersler, durum, hafta, gun, toplam)
@@ -576,7 +592,7 @@ def planla(ham_etkinlikler, dersler, durum, hafta, gun, simdi):
         eylemler += baslik_farki(bot_liste, liste, gun, f"{ISARET} liste")
 
     if BILDIRIM_DUZELT:
-        eylemler += bildirim_eylemleri(ders_etk, gymler)
+        eylemler += bildirim_eylemleri(ders_etk, gymler, simdi)
 
     guvenlik_denetimi(eylemler, etkinlikler, gun, simdi)
 

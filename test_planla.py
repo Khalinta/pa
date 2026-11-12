@@ -212,6 +212,89 @@ class Idempotentlik(Temel):
         self.assertEqual(self.saatler(plan), [("16:00", "17:00")])
 
 
+class GecmiseDokunma(Temel):
+    """T == bugün, saat 16:00: başlamış etkinlikler dondurulur."""
+    SIMDI = "2026-11-13T16:00"
+
+    def _uygulanmis(self):
+        ilk = self.calistir("2026-11-13", "2026-11-12T20:50")
+        return uygula(self.etkinlikler, ilk["eylemler"])
+
+    def _pencere_kimlikleri(self, etk):
+        return {e["id"] for e in etk if e.get("description") == "[evolve-bot] calisma"}
+
+    def test_baslamis_bot_penceresine_dokunulmaz(self):
+        sonra = self._uygulanmis()
+        durum = copy.deepcopy(self.durum)
+        durum["ANA1"]["t"] = "2026-11-13"
+        plan = self.calistir("2026-11-13", self.SIMDI, etkinlikler=sonra, durum=durum)
+        hedefler = {ey["parametreler"].get("eventId") for ey in plan["eylemler"]}
+        self.assertFalse(hedefler & self._pencere_kimlikleri(sonra))
+        # donmuş pencereler toplamda sayılır ve gösterilir; liste değişikliği güncelleme olur
+        self.assertEqual(self.saatler(plan), [("07:30", "08:30"), ("15:15", "18:15")])
+        self.assertEqual(plan["liste"], ["1 Anki", "2 ANA 2 test", "3 ANA 7 slayt", "4 HİST 1 slayt"])
+        self.assertEqual(self.araclar(plan), ["update_event"])
+
+    def test_degisiklik_yoksa_eylem_yok(self):
+        sonra = self._uygulanmis()
+        self.assertEqual(self.calistir("2026-11-13", self.SIMDI, etkinlikler=sonra)["eylemler"], [])
+
+    def test_kullanici_penceresi_gelse_de_baslamis_silinmez(self):
+        sonra = self._uygulanmis() + [{"id": "k1", "summary": "Çalışma",
+                                       "start": {"dateTime": "2026-11-13T19:00:00+03:00"},
+                                       "end": {"dateTime": "2026-11-13T20:00:00+03:00"}}]
+        plan = self.calistir("2026-11-13", self.SIMDI, etkinlikler=sonra)
+        hedefler = {ey["parametreler"].get("eventId") for ey in plan["eylemler"]}
+        self.assertFalse(hedefler & self._pencere_kimlikleri(sonra))
+
+    def test_program_yok_dalinda_baslamis_pencere_silinmez(self):
+        sonra = [e for e in self._uygulanmis() if e["id"] not in ("e_anap13", "e_bfz13")]
+        plan = self.calistir("2026-11-13", self.SIMDI, etkinlikler=sonra)
+        hedefler = {ey["parametreler"].get("eventId") for ey in plan["eylemler"]}
+        self.assertFalse(hedefler & self._pencere_kimlikleri(sonra))
+        self.assertEqual(self.araclar(plan).count("delete_event"), 4)  # yalnız tüm gün liste maddeleri
+
+    def test_yeni_pencere_donmusla_cakismaz(self):
+        # Tek donmuş pencere 15:15–16:30; yeni pencere ancak ondan sonra başlayabilir
+        sonra = [e for e in self._uygulanmis() if e.get("description") != "[evolve-bot] calisma"]
+        sonra.append({"id": "bp", "summary": "Çalışma", "description": "[evolve-bot] calisma",
+                      "location": "ev", "start": {"dateTime": "2026-11-13T15:15:00+03:00"},
+                      "end": {"dateTime": "2026-11-13T16:30:00+03:00"}})
+        plan = self.calistir("2026-11-13", self.SIMDI, etkinlikler=sonra)
+        self.assertEqual(self.saatler(plan), [("15:15", "16:30"), ("16:30", "19:00")])
+        yeni = [ey["parametreler"] for ey in plan["eylemler"]]
+        self.assertEqual([(p["startTime"][11:16], p["endTime"][11:16]) for p in yeni], [("16:30", "19:00")])
+
+    def test_guvenlik_baslamis_pencereyi_sildirmez(self):
+        sonra = self._uygulanmis()
+        kimlik = next(e["id"] for e in sonra if e.get("description") == "[evolve-bot] calisma"
+                      and e["start"]["dateTime"].startswith("2026-11-13T15:15"))
+        eylem = {"arac": "delete_event", "parametreler": {"eventId": kimlik}}
+        with self.assertRaises(P.GuvenlikHatasi):
+            P.guvenlik_denetimi([eylem], sonra, date(2026, 11, 13), datetime(2026, 11, 13, 16, 0))
+        # henüz başlamamışken aynı silme serbest
+        P.guvenlik_denetimi([eylem], sonra, date(2026, 11, 13), datetime(2026, 11, 13, 15, 0))
+        # tüm gün liste maddesi gün içinde de güncellenebilir
+        liste = next(e["id"] for e in sonra if e.get("summary") == "2 ANA 1 test")
+        P.guvenlik_denetimi([{"arac": "update_event", "parametreler": {"eventId": liste, "summary": "x"}}],
+                            sonra, date(2026, 11, 13), datetime(2026, 11, 13, 16, 0))
+
+    def test_baslamis_gym_yeniden_adlandirilmaz(self):
+        sonra = self._uygulanmis()
+        next(e for e in sonra if e["id"] == "e_gym13")["summary"] = "Gym (Üst B)"
+        plan = self.calistir("2026-11-13", self.SIMDI, etkinlikler=sonra)
+        self.assertEqual(plan["eylemler"], [])
+        self.assertTrue(any("başlamış" in s for s in plan["ozet"]))
+        with self.assertRaises(P.GuvenlikHatasi):
+            P.guvenlik_denetimi(
+                [{"arac": "update_event", "parametreler": {"eventId": "e_gym13", "summary": "Gym (Alt A)"}}],
+                sonra, date(2026, 11, 13), datetime(2026, 11, 13, 16, 0))
+        # sabah, gym başlamadan: düzeltilir
+        sabah = self.calistir("2026-11-13", "2026-11-13T06:00", etkinlikler=sonra)
+        self.assertEqual([ey["parametreler"] for ey in sabah["eylemler"]],
+                         [{"eventId": "e_gym13", "summary": "Gym (Alt A)"}])
+
+
 class Gym(Temel):
     def test_yanlis_baslik_duzeltilir(self):
         etk = copy.deepcopy(self.etkinlikler)
