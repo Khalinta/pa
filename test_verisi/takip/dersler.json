@@ -1,0 +1,377 @@
+{
+  "exam": "2026-12-18",
+  "list": [
+    {
+      "c": "ANA",
+      "d": "2026-11-02",
+      "id": "ANA1",
+      "n": 1,
+      "t": "Anatomiye Giriş ve Anatomi Terminolojisi"
+    },
+    {
+      "c": "HİST",
+      "d": "2026-11-03",
+      "id": "HIST0",
+      "n": 1,
+      "t": "Spermatogenez"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-03",
+      "id": "ANA3",
+      "n": 2,
+      "t": "Hareket sistemi - 1"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-03",
+      "id": "ANA3b",
+      "n": 3,
+      "t": "Hareket sistemi - 2"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-04",
+      "id": "ANA3c",
+      "n": 4,
+      "t": "Hareket sistemi - 3"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-11-04",
+      "id": "TBG1",
+      "n": 1,
+      "t": "Hücre Zarının Yapısı, İşlevi ve Hücre Zarından Madde Taşınması"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-11-04",
+      "id": "TBG2",
+      "n": 2,
+      "t": "Hücre Yüzeyindeki Farklılaşmalar"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-06",
+      "id": "ANA4",
+      "n": 5,
+      "t": "Dolaşım sistemi genel anatomisi"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-11-06",
+      "id": "TBG3",
+      "n": 3,
+      "t": "Hücreler Arası Bağlantılar"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-11-06",
+      "id": "TBG3b",
+      "n": 4,
+      "t": "Hücre Dışı Matris"
+    },
+    {
+      "c": "BİST",
+      "d": "2026-11-09",
+      "id": "BIST1",
+      "n": 1,
+      "t": "Kategorik veri analizi"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-10",
+      "id": "ANA5",
+      "n": 6,
+      "t": "Solunum sistemi genel anatomisi"
+    },
+    {
+      "c": "HİST",
+      "d": "2026-11-10",
+      "id": "HIST1",
+      "n": 2,
+      "t": "Ovulasyon ve korpus luteum"
+    },
+    {
+      "c": "HİST",
+      "d": "2026-11-11",
+      "id": "HIST2",
+      "n": 3,
+      "t": "Fertilizasyon, Yarıklanma ve İmplantasyon"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-11-11",
+      "id": "TBG4",
+      "n": 5,
+      "t": "Hücre İskeleti ve Motor Proteinler"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-11-11",
+      "id": "TBG5",
+      "n": 6,
+      "t": "Hücrelerarası İletişim Çeşitleri"
+    },
+    {
+      "c": "BİST",
+      "d": "2026-11-11",
+      "id": "BIST2",
+      "n": 2,
+      "t": "Student t ve Mann Whitney U testleri"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-12",
+      "id": "ANA6",
+      "n": 7,
+      "t": "Sindirim sistemi genel anatomisi"
+    },
+    {
+      "c": "HİST",
+      "d": "2026-11-12",
+      "id": "HIST3",
+      "n": 4,
+      "t": "Bilaminar ve Trilaminar germ diskleri, Gastrulasyon, Notokord oluşumu"
+    },
+    {
+      "c": "BFZ",
+      "d": "2026-11-13",
+      "id": "BFZ1",
+      "n": 1,
+      "t": "Moleküler Evrime Biyofiziksel Bakış"
+    },
+    {
+      "c": "HİST",
+      "d": "2026-11-16",
+      "id": "HIST4",
+      "n": 5,
+      "t": "Trofoblastların gelişimi ve Ekstraembriyonik mezoderm"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-16",
+      "id": "ANA7",
+      "n": 8,
+      "t": "Sinir sistemi genel anatomisi"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-11-17",
+      "id": "BKY1",
+      "n": 1,
+      "t": "Metabolizmaya giriş"
+    },
+    {
+      "c": "BFZ",
+      "d": "2026-11-18",
+      "id": "BFZ2",
+      "n": 2,
+      "t": "Biyolojik Sistemlerde Termodinamik"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-18",
+      "id": "ANA8",
+      "n": 9,
+      "t": "Ürogenital sistem genel anatomisi"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-20",
+      "id": "ANA9",
+      "n": 10,
+      "t": "Duyu organları genel anatomisi"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-11-23",
+      "id": "BKY2",
+      "n": 2,
+      "t": "Karbohidrat kimyası"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-11-23",
+      "id": "BKY3",
+      "n": 3,
+      "t": "Karbohidratların sindirimi ve emilimi"
+    },
+    {
+      "c": "BİST",
+      "d": "2026-11-24",
+      "id": "BIST3",
+      "n": 3,
+      "t": "Tekyönlü Anova ve Kruskal Wallis testleri"
+    },
+    {
+      "c": "BFZ",
+      "d": "2026-11-24",
+      "id": "BFZ3",
+      "n": 3,
+      "t": "Gibbs Serbestlik Enerjisi"
+    },
+    {
+      "c": "ANA",
+      "d": "2026-11-25",
+      "id": "ANA10",
+      "n": 11,
+      "t": "Endokrin sistem genel anatomisi"
+    },
+    {
+      "c": "HİST",
+      "d": "2026-11-25",
+      "id": "HIST5",
+      "n": 6,
+      "t": "Embriyonel ve fötal dönemler"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-11-25",
+      "id": "BKY4",
+      "n": 4,
+      "t": "Glikoliz"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-11-26",
+      "id": "BKY5",
+      "n": 5,
+      "t": "Piruvat metabolizması ve Krebs siklusu"
+    },
+    {
+      "c": "BİST",
+      "d": "2026-11-26",
+      "id": "BIST4",
+      "n": 4,
+      "t": "Eşleştirilmiş t ve Wilcoxon testleri"
+    },
+    {
+      "c": "BİST",
+      "d": "2026-11-26",
+      "id": "BIST5",
+      "n": 5,
+      "t": "Parametrik ve nonparametrik testler"
+    },
+    {
+      "c": "HİST",
+      "d": "2026-11-27",
+      "id": "HIST6",
+      "n": 7,
+      "t": "Embriyo dışı oluşumlar"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-11-27",
+      "id": "BKY6",
+      "n": 6,
+      "t": "Glikojen metabolizması"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-11-30",
+      "id": "TBG6",
+      "n": 7,
+      "t": "Hücre Sinyal İletim Mekanizmaları"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-11-30",
+      "id": "BKY7",
+      "n": 7,
+      "t": "Glukoneojenez"
+    },
+    {
+      "c": "HİST",
+      "d": "2026-11-30",
+      "id": "HIST7",
+      "n": 8,
+      "t": "Dokulara giriş ve epitel"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-12-01",
+      "id": "BKY8",
+      "n": 8,
+      "t": "Hormonal kontrol"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-12-01",
+      "id": "TBG7",
+      "n": 8,
+      "t": "Mitoz bölünme"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-12-02",
+      "id": "TBG8",
+      "n": 9,
+      "t": "Mayoz bölünme"
+    },
+    {
+      "c": "BFZ",
+      "d": "2026-12-02",
+      "id": "BFZ4",
+      "n": 4,
+      "t": "Moleküler Biyofiziğin Temel Kavramları ve Biyomoleküler Sistemlerde Etkileşimler"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-12-02",
+      "id": "BKY9",
+      "n": 9,
+      "t": "Monosakkaritlerin metabolizması"
+    },
+    {
+      "c": "BFZ",
+      "d": "2026-12-04",
+      "id": "BFZ5",
+      "n": 5,
+      "t": "Makro-Mikrosistemler ve Birbirleri ile Benzerlikleri"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-12-04",
+      "id": "BKY10",
+      "n": 10,
+      "t": "Pentoz fosfat yolu"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-12-07",
+      "id": "TBG9",
+      "n": 10,
+      "t": "Gametogenez"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-12-07",
+      "id": "BKY12",
+      "n": 12,
+      "t": "Beslenme"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-12-08",
+      "id": "BKY13",
+      "n": 13,
+      "t": "Açlıkta ve toklukta metabolizma"
+    },
+    {
+      "c": "BKY",
+      "d": "2026-12-09",
+      "id": "BKY11",
+      "n": 11,
+      "t": "Enzimler"
+    },
+    {
+      "c": "TBG",
+      "d": "2026-12-10",
+      "id": "TBG10",
+      "n": 11,
+      "t": "Hücre Döngüsünün Moleküler Mekanizması ve Kontrolü"
+    }
+  ],
+  "title": "Kurul 2"
+}
