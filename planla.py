@@ -352,11 +352,11 @@ def liste_kur(dersler, durum, hafta, gun, toplam_dk):
                 ekle(ad, d)
                 break
 
-    basliklar = ["1 Anki"]
+    basliklar = ["1) Anki"]
     for ad in ("a", "b1", "b2", "c"):
         for d in secilen[ad]:
             ek = "test" if ad == "a" else "slayt"
-            basliklar.append(f"{len(basliklar) + 1} {d['c']} {d.get('n', '?')} {ek}")
+            basliklar.append(f"{len(basliklar) + 1}) {d['c']} {d.get('n', '?')} {ek}")
     return basliklar, butce
 
 

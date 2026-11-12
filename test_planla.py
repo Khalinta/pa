@@ -123,7 +123,7 @@ class Temel(unittest.TestCase):
 class BeklenenSonuclar(Temel):
     def test_cuma_13(self):
         plan = self.calistir("2026-11-13", "2026-11-12T20:50")
-        self.assertEqual(plan["liste"], ["1 Anki", "2 ANA 1 test", "3 ANA 7 slayt", "4 HİST 1 slayt"])
+        self.assertEqual(plan["liste"], ["1) Anki", "2) ANA 1 test", "3) ANA 7 slayt", "4) HİST 1 slayt"])
         self.assertEqual(self.saatler(plan), [("07:30", "08:30"), ("15:15", "18:15")])
         self.assertEqual(sum(p["dk"] for p in plan["pencereler"]), 240)
         self.assertEqual(self.araclar(plan), ["create_event"] * 6)
@@ -133,7 +133,7 @@ class BeklenenSonuclar(Temel):
     def test_cuma_13_eylem_bicimi(self):
         plan = self.calistir("2026-11-13", "2026-11-12T20:50")
         par = [ey["parametreler"] for ey in plan["eylemler"]]
-        self.assertIn({"summary": "1 Anki", "startTime": "2026-11-13T00:00:00",
+        self.assertIn({"summary": "1) Anki", "startTime": "2026-11-13T00:00:00",
                        "endTime": "2026-11-14T00:00:00", "allDay": True,
                        "description": "[evolve-bot] liste",
                        "availability": "AVAILABILITY_FREE", "useDefaultReminders": False}, par)
@@ -144,8 +144,8 @@ class BeklenenSonuclar(Temel):
 
     def test_cumartesi_14(self):
         plan = self.calistir("2026-11-14", "2026-11-13T20:50")
-        self.assertEqual(plan["liste"], ["1 Anki", "2 ANA 1 test", "3 ANA 2 test", "4 ANA 3 test",
-                                         "5 ANA 4 test", "6 ANA 5 test", "7 BFZ 1 slayt"])
+        self.assertEqual(plan["liste"], ["1) Anki", "2) ANA 1 test", "3) ANA 2 test", "4) ANA 3 test",
+                                         "5) ANA 4 test", "6) ANA 5 test", "7) BFZ 1 slayt"])
         self.assertEqual(self.saatler(plan), [("07:30", "10:30"), ("12:30", "15:30")])
         self.assertTrue(any("bütçe 220" in s for s in plan["ozet"]))
 
@@ -180,12 +180,12 @@ class Idempotentlik(Temel):
         durum = copy.deepcopy(self.durum)
         durum["ANA1"]["t"] = "2026-11-12"
         plan = self.calistir("2026-11-13", "2026-11-12T20:50", etkinlikler=sonra, durum=durum)
-        self.assertEqual(plan["liste"], ["1 Anki", "2 ANA 2 test", "3 ANA 7 slayt", "4 HİST 1 slayt"])
+        self.assertEqual(plan["liste"], ["1) Anki", "2) ANA 2 test", "3) ANA 7 slayt", "4) HİST 1 slayt"])
         self.assertEqual(self.araclar(plan), ["update_event"])
         p = plan["eylemler"][0]["parametreler"]
         eski = next(e for e in sonra if e["id"] == p["eventId"])
-        self.assertEqual(eski["summary"], "2 ANA 1 test")
-        self.assertEqual(p, {"eventId": p["eventId"], "summary": "2 ANA 2 test"})
+        self.assertEqual(eski["summary"], "2) ANA 1 test")
+        self.assertEqual(p, {"eventId": p["eventId"], "summary": "2) ANA 2 test"})
         self.assertEqual(self.calistir("2026-11-13", "2026-11-12T20:50",
                                        etkinlikler=uygula(sonra, plan["eylemler"]),
                                        durum=durum)["eylemler"], [])
@@ -216,11 +216,11 @@ class Idempotentlik(Temel):
                       "end": {"dateTime": "2026-11-13T17:00:00+03:00"}})
         plan = self.calistir("2026-11-13", "2026-11-12T20:50", etkinlikler=sonra)
         # 60 dk -> bütçe 20: hiçbir şey sığmaz, tek madde (ilk test) yine de girer
-        self.assertEqual(plan["liste"], ["1 Anki", "2 ANA 1 test"])
+        self.assertEqual(plan["liste"], ["1) Anki", "2) ANA 1 test"])
         self.assertEqual(self.araclar(plan), ["delete_event"] * 4)
         kimlikten = {e["id"]: e for e in sonra}
         silinen = sorted(kimlikten[ey["parametreler"]["eventId"]]["summary"] for ey in plan["eylemler"])
-        self.assertEqual(silinen, ["3 ANA 7 slayt", "4 HİST 1 slayt", "Çalışma", "Çalışma"])
+        self.assertEqual(silinen, ["3) ANA 7 slayt", "4) HİST 1 slayt", "Çalışma", "Çalışma"])
         self.assertEqual(self.saatler(plan), [("16:00", "17:00")])
 
 
@@ -244,7 +244,7 @@ class GecmiseDokunma(Temel):
         self.assertFalse(hedefler & self._pencere_kimlikleri(sonra))
         # donmuş pencereler toplamda sayılır ve gösterilir; liste değişikliği güncelleme olur
         self.assertEqual(self.saatler(plan), [("07:30", "08:30"), ("15:15", "18:15")])
-        self.assertEqual(plan["liste"], ["1 Anki", "2 ANA 2 test", "3 ANA 7 slayt", "4 HİST 1 slayt"])
+        self.assertEqual(plan["liste"], ["1) Anki", "2) ANA 2 test", "3) ANA 7 slayt", "4) HİST 1 slayt"])
         self.assertEqual(self.araclar(plan), ["update_event"])
 
     def test_degisiklik_yoksa_eylem_yok(self):
@@ -287,7 +287,7 @@ class GecmiseDokunma(Temel):
         # henüz başlamamışken aynı silme serbest
         P.guvenlik_denetimi([eylem], sonra, date(2026, 11, 13), datetime(2026, 11, 13, 15, 0))
         # tüm gün liste maddesi gün içinde de güncellenebilir
-        liste = next(e["id"] for e in sonra if e.get("summary") == "2 ANA 1 test")
+        liste = next(e["id"] for e in sonra if e.get("summary") == "2) ANA 1 test")
         P.guvenlik_denetimi([{"arac": "update_event", "parametreler": {"eventId": liste, "summary": "x"}}],
                             sonra, date(2026, 11, 13), datetime(2026, 11, 13, 16, 0))
 
@@ -345,7 +345,7 @@ class Pencereler(Temel):
             self.assertNotEqual(ey["parametreler"].get("description"), "[evolve-bot] calisma")
         self.assertEqual(self.saatler(plan), [("15:30", "18:30")])
         # 180 dk -> bütçe 100: b1 iki slayt (90), test sığmaz
-        self.assertEqual(plan["liste"], ["1 Anki", "2 ANA 7 slayt", "3 HİST 1 slayt"])
+        self.assertEqual(plan["liste"], ["1) Anki", "2) ANA 7 slayt", "3) HİST 1 slayt"])
 
     def test_gec_pencere_son_bitise_kadar(self):
         etk = [{"id": "x", "summary": "Gezi",
@@ -370,7 +370,7 @@ class Liste(Temel):
     def test_hist_sirasi(self):
         # Dünün dersi HIST3 (n=4) ama HIST0 (n=1) okunmamış -> "HİST 1 slayt"
         plan = self.calistir("2026-11-13", "2026-11-12T20:50")
-        self.assertIn("4 HİST 1 slayt", plan["liste"])
+        self.assertIn("4) HİST 1 slayt", plan["liste"])
         self.assertFalse(any("HİST 4" in m for m in plan["liste"]))
 
     def test_hist_tekrarsiz_ve_sirali(self):
@@ -384,8 +384,8 @@ class Liste(Temel):
                 "start": {"dateTime": "2026-11-14T08:00:00+03:00"},
                 "end": {"dateTime": "2026-11-14T20:00:00+03:00"}}]
         plan = self.calistir("2026-11-14", "2026-11-13T20:50", etkinlikler=etk, durum=durum)
-        self.assertEqual(plan["liste"], ["1 Anki", "2 HİST 1 slayt", "3 HİST 2 slayt",
-                                         "4 ANA 7 slayt", "5 HİST 4 slayt"])
+        self.assertEqual(plan["liste"], ["1) Anki", "2) HİST 1 slayt", "3) HİST 2 slayt",
+                                         "4) ANA 7 slayt", "5) HİST 4 slayt"])
 
     def _testsiz_durum(self):
         durum = copy.deepcopy(self.durum)
@@ -396,11 +396,11 @@ class Liste(Temel):
     def test_hafta_havuzu_gecerliyse_kullanilir(self):
         hafta = {"hafta": "2026-11-09", "havuz": ["TBG5:r", "HIST3:r", "ANA3:t"]}
         plan = self.calistir("2026-11-14", "2026-11-13T20:50", durum=self._testsiz_durum(), hafta=hafta)
-        self.assertEqual(plan["liste"], ["1 Anki", "2 BFZ 1 slayt", "3 TBG 6 slayt", "4 HİST 1 slayt"])
+        self.assertEqual(plan["liste"], ["1) Anki", "2) BFZ 1 slayt", "3) TBG 6 slayt", "4) HİST 1 slayt"])
 
     def test_hafta_havuzu_eskiyse_yok_sayilir(self):
         hafta = {"hafta": "2026-11-02", "havuz": ["TBG5:r", "HIST3:r", "ANA3:t"]}
-        beklenen = ["1 Anki", "2 BFZ 1 slayt", "3 HİST 1 slayt", "4 TBG 2 slayt", "5 TBG 4 slayt"]
+        beklenen = ["1) Anki", "2) BFZ 1 slayt", "3) HİST 1 slayt", "4) TBG 2 slayt", "5) TBG 4 slayt"]
         plan = self.calistir("2026-11-14", "2026-11-13T20:50", durum=self._testsiz_durum(), hafta=hafta)
         self.assertEqual(plan["liste"], beklenen)
         yok = self.calistir("2026-11-14", "2026-11-13T20:50", durum=self._testsiz_durum())
@@ -412,15 +412,15 @@ class Liste(Temel):
                 "end": {"dateTime": "2026-11-14T23:00:00+03:00"}}]
         plan = self.calistir("2026-11-14", "2026-11-13T20:50", etkinlikler=etk)
         self.assertEqual(len(plan["liste"]), P.EN_COK_MADDE)
-        self.assertEqual(plan["liste"][0], "1 Anki")
+        self.assertEqual(plan["liste"][0], "1) Anki")
 
 
 class ProgramYok(Temel):
     def test_not_mevcut_bot_listesinin_yerini_alir(self):
         etk = self.etkinlikler + [
-            {"id": "b1", "summary": "1 Anki", "description": "[evolve-bot] liste",
+            {"id": "b1", "summary": "1) Anki", "description": "[evolve-bot] liste",
              "start": {"date": "2026-11-16"}, "end": {"date": "2026-11-17"}},
-            {"id": "b2", "summary": "2 ANA 1 test", "description": "[evolve-bot] liste",
+            {"id": "b2", "summary": "2) ANA 1 test", "description": "[evolve-bot] liste",
              "start": {"date": "2026-11-16"}, "end": {"date": "2026-11-17"}},
             {"id": "b3", "summary": "Çalışma", "description": "[evolve-bot] calisma", "location": "ev",
              "start": {"dateTime": "2026-11-16T07:30:00+03:00"},
@@ -476,12 +476,12 @@ class Guvenlik(Temel):
                     gun=date(2026, 11, 11))
 
     def test_olusturma_kurallari(self):
-        iyi = P.tum_gun_olustur("1 Anki", self.T, "[evolve-bot] liste")
+        iyi = P.tum_gun_olustur("1) Anki", self.T, "[evolve-bot] liste")
         P.guvenlik_denetimi([iyi], self.etkinlikler, self.T, self.SIMDI)
         isaretsiz = copy.deepcopy(iyi)
         isaretsiz["parametreler"]["description"] = "liste"
         self.reddet(isaretsiz)
-        self.reddet(P.tum_gun_olustur("1 Anki", date(2026, 11, 14), "[evolve-bot] liste"))
+        self.reddet(P.tum_gun_olustur("1) Anki", date(2026, 11, 14), "[evolve-bot] liste"))
 
     def test_izinli_olanlar_gecer(self):
         P.guvenlik_denetimi(
@@ -533,7 +533,7 @@ class KomutSatiri(unittest.TestCase):
         kod, cikti, _ = self.kos("--simdi", "2026-11-12T20:50")
         self.assertEqual(kod, 0)
         self.assertIn("Plan: 2026-11-13 (Cuma)", cikti)
-        self.assertIn("4 HİST 1 slayt", cikti)
+        self.assertIn("4) HİST 1 slayt", cikti)
 
     def test_gece_gec_calistirma_ayni_gun(self):
         kod, cikti, _ = self.kos("--simdi", "2026-11-13T01:30")

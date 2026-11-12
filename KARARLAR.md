@@ -27,3 +27,4 @@ Kararsız kalınan yerlerde seçilenler, her biri tek satır.
 21b. Araç "bugün" için çalışırsa başlamış çalışma zamanına ve başlamış gym'e dokunmaz.
 22. Görev gece yarısından sonraya kalırsa (04:00'e kadar) "yarın" yerine o günü hazırlar.
 23. Bildirim/e-posta ile sonuç gönderilmez; sonuç yalnızca takvimde görünür.
+24. Liste başlıkları "1) Anki", "2) ANA 1 test" biçiminde yazılır (Ali 12 Kasım'da istedi).
