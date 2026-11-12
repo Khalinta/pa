@@ -66,6 +66,18 @@ def gym_mi(e):
     return (e.get("summary") or "").lower().startswith("gym") or e.get("calendarName") == P.GYM_TAKVIMI
 
 
+_ASIL_BILDIRIM = P.BILDIRIM_DUZELT
+
+
+def setUpModule():
+    # Testler bildirim düzeltmesi kapalıyken yazıldı; açık hâli kendi sınıfında denenir.
+    P.BILDIRIM_DUZELT = False
+
+
+def tearDownModule():
+    P.BILDIRIM_DUZELT = _ASIL_BILDIRIM
+
+
 class Temel(unittest.TestCase):
     def setUp(self):
         self.etkinlikler = oku(ETKINLIK_DOSYASI)["events"]

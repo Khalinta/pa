@@ -9,7 +9,7 @@ Kararsız kalınan yerlerde seçilenler, her biri tek satır.
 4. Bütçe (çalışma süresinin 2/3'ü) üst sınırdır; tek istisna "en az bir ders maddesi".
 5. Anki'nin 20 dakikası bütçeden düşülür (az koymak için).
 6. Sığmayan ilk maddede liste kesilir, daha küçük madde aranmaz (kararsızsan az koy).
-7. HİST sırası: Listeye bir HİST slaytı girecekse, hangi dersin sırası gelmiş olursa olsun okunmamış en küçük numaralı HİST girer.
+7. HİST sırası (Ali 12 Kasım'da onayladı): Listeye bir HİST slaytı girecekse, hangi dersin sırası gelmiş olursa olsun okunmamış en küçük numaralı HİST girer.
 8. Testi çözülmüş ders, slayt tarihi boş olsa bile bitmiş sayılır (örn. HİST 3).
 9. "En eski" = dersin işlendiği tarihe göre en eski.
 10. Haftalık havuz (takip/hafta) yalnızca o haftanın pazartesi tarihini taşıyorsa kullanılır; yoksa ya da eskiyse en eski okunmamışlara bakılır.
@@ -21,7 +21,7 @@ Kararsız kalınan yerlerde seçilenler, her biri tek satır.
 16. Gym: Takvimdeki geçmiş gym etkinlikleri yapılmış sayılır; kaçırdığın antrenmanın etkinliğini silersen sıra kendiliğinden kayar.
 17. Gym'de araç yalnızca başlığı düzeltir; saatine, süresine dokunmaz. Geçmişte hiç gym yoksa dokunmaz.
 18. Hafta içi derssiz gün (resmi tatil dahil) "Program girilmemiş" notu alır; hafta sonu derssiz günde liste ve çalışma zamanı yazılır.
-19. Bildirimler: Araç yalnızca kendi "Çalışma" etkinliğine (başlangıçta) bildirim koyar. Ders ve gym bildirimlerine dokunmaz, çünkü "derslere dokunma" kuralı pazarlıksız. İstenirse `BILDIRIM_DUZELT` ayarı açılır (ilk ders 50 dk, gym 20 dk, diğer dersler bildirimsiz).
+19. Bildirimler (Ali 12 Kasım'da onayladı): Araç her akşam yarının ilk dersini 50 dk, gym'i 20 dk önceye alır, diğer derslerin bildirimini kaldırır, kendi "Çalışma" etkinliğine başlangıçta bildirim koyar. Ders ve gym'de yalnızca bildirim ayarına dokunur; kapatmak için `BILDIRIM_DUZELT` ayarı.
 20. Takvimdeki "Okula gidiş" / "Dönüş" / "Yarını planla" etkinlikleri senin; araç onlara dokunmaz, yalnızca dolu zaman sayar.
 21. Bugün neyi bitirdiğini araç yalnızca Kurul 2 Takip'ten bilir; orada işaretlenmeyen madde ertesi gün yeniden listeye girebilir.
 21b. Araç "bugün" için çalışırsa başlamış çalışma zamanına ve başlamış gym'e dokunmaz.

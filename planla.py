@@ -34,7 +34,7 @@ TAKIP_DERSLER = ["ANA", "BKY", "HİST", "TBG", "BFZ", "BİST"]  # listeye giren 
 GYM_SIRA = ["Üst A", "Alt A", "Üst B", "Alt B"]               # gym döngüsü
 ISARET = "[evolve-bot]"         # botun kendi etkinliklerine koyduğu işaret
 PROGRAM_YOK_BASLIK = "Program girilmemiş - Claude'a 'haftayı gir' yaz"  # program yok notu
-BILDIRIM_DUZELT = False         # True: ders/gym bildirimlerini de düzelt
+BILDIRIM_DUZELT = True          # True: ders/gym bildirimlerini de düzelt
 DERS_TAKVIMI = "Ders"           # ders takviminin adı
 GYM_TAKVIMI = "Gym"             # gym takviminin adı
 # ───────────── AYARLAR SONU ─────────────
