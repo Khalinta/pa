@@ -3,6 +3,7 @@
 Kararsız kalınan yerlerde seçilenler, her biri tek satır.
 
 1. Altyapı: Sıfırdan sistem kurulmadı; Claude'un zamanlanmış görevi + Google Calendar bağlayıcısı + Kurul 2 Takip veritabanı kullanılıyor.
+1b. Zamanlanmış görev bu sohbete bağlı: yeni oturum açan görev türü bu hesapta Google Calendar bağlantısını taşıyamadığı için, her akşam 20:50'de bu sohbet uyanıp işi yapar (sohbet silinmemeli/arşivlenmemeli).
 2. İş bölümü: Liste ve saat kararlarını her seferinde aynı sonucu veren `planla.py` verir; akşam açılan Claude oturumu yalnızca okur, programı çalıştırır ve çıkan eylemleri uygular (adımlar `GOREV.md`'de).
 3. "Slayt en geç ertesi gün listeye girer" kuralı: Dünün dersinin slaytı bütçeden yerini testlerden ÖNCE ayırır, ama listede testlerden sonra görünür.
 4. Bütçe (çalışma süresinin 2/3'ü) üst sınırdır; tek istisna "en az bir ders maddesi".
@@ -23,5 +24,6 @@ Kararsız kalınan yerlerde seçilenler, her biri tek satır.
 19. Bildirimler: Araç yalnızca kendi "Çalışma" etkinliğine (başlangıçta) bildirim koyar. Ders ve gym bildirimlerine dokunmaz, çünkü "derslere dokunma" kuralı pazarlıksız. İstenirse `BILDIRIM_DUZELT` ayarı açılır (ilk ders 50 dk, gym 20 dk, diğer dersler bildirimsiz).
 20. Takvimdeki "Okula gidiş" / "Dönüş" / "Yarını planla" etkinlikleri senin; araç onlara dokunmaz, yalnızca dolu zaman sayar.
 21. Bugün neyi bitirdiğini araç yalnızca Kurul 2 Takip'ten bilir; orada işaretlenmeyen madde ertesi gün yeniden listeye girebilir.
+21b. Araç "bugün" için çalışırsa başlamış çalışma zamanına ve başlamış gym'e dokunmaz.
 22. Görev gece yarısından sonraya kalırsa (04:00'e kadar) "yarın" yerine o günü hazırlar.
 23. Bildirim/e-posta ile sonuç gönderilmez; sonuç yalnızca takvimde görünür.
