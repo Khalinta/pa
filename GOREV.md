@@ -7,7 +7,7 @@ Kimseye soru sorma, onay bekleme. Bir adım başarısız olursa takvime HİÇBİ
 
 - Yalnızca `planla.py`'nin ürettiği eylemleri, verdiği parametrelerle AYNEN uygula. Kendi kafandan etkinlik ekleme, silme, değiştirme.
 - Geçmişteki etkinliklere dokunma. Açıklamasında `[evolve-bot]` olmayan etkinliklere dokunma (tek istisna: planla.py'nin istediği Gym başlık düzeltmesi).
-- Anki'ye, e-postaya, Evolve / Ders / Gym dışındaki takvimlere dokunma. Kurul 2 Takip'e yazma, yalnızca oku.
+- Anki'ye, e-postaya, Evolve / Ders / Gym dışındaki takvimlere dokunma. AWorld sayfasına ASLA yazma, yalnızca oku.
 - Liste kurallarını kendin yorumlama; karar planla.py'nindir.
 
 ## Adımlar
@@ -22,7 +22,11 @@ Kimseye soru sorma, onay bekleme. Bir adım başarısız olursa takvime HİÇBİ
 
    Hepsini tek dosyaya yaz: `/tmp/evolve/etkinlikler.json`, biçim `{"events": [...]}`. Her etkinlik için yalnızca şu alanları, değerleri DEĞİŞTİRMEDEN kopyala: `id`, `summary`, `description`, `location`, `start`, `end`, `useDefaultReminders`, `overrideReminders`. Evolve dışındaki takvimden gelen etkinliğe `calendarId` ve `calendarName` ("Ders" / "Gym") ekle. Hiçbir etkinliği atlama (T günündeki tüm gün süren etkinlikler dahil).
 
-4. **Ders takibini oku.** `ArtifactData`: `action: list`, `url: https://claude.ai/code/artifact/1d2e2b4e-a9d1-47bd-ad15-09639326a754`, `collection: takip`, `out_dir: /tmp/evolve/db`. (`takip/hafta` belgesi olmayabilir; sorun değil.)
+4. **Ders takibini oku** (yalnızca OKU; AWorld'e hiçbir şey yazma, silme, değiştirme). Ders takibi "AWorld" sayfasında: `https://claude.ai/artifact/6VrgWKhxAviKSLqUStArwN`.
+   - Önce `rm -rf /tmp/evolve/aworld /tmp/evolve/db` çalıştır (eski veri kalmasın).
+   - `ArtifactData`, `action: list`, `out_dir: /tmp/evolve/aworld`, `query: {"limit": 1000}` ile üç koleksiyonu ayrı ayrı oku: `lectures`, `questions`, `progress`. Sonuçta `next_cursor` varsa aynı koleksiyonu o imleçle okumaya devam et, bitene kadar.
+   - Çevir: `python3 aworld_cevir.py --aworld /tmp/evolve/aworld --cikti /tmp/evolve/db`
+   - Okuma ya da çevirme hata verirse dur (takvime hiçbir şey yazma).
 
 5. **Planla.**
    `python3 planla.py --etkinlikler /tmp/evolve/etkinlikler.json --db /tmp/evolve/db --cikti /tmp/evolve/plan.json`

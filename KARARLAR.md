@@ -28,3 +28,6 @@ Kararsız kalınan yerlerde seçilenler, her biri tek satır.
 22. Görev gece yarısından sonraya kalırsa (04:00'e kadar) "yarın" yerine o günü hazırlar.
 23. Bildirim/e-posta ile sonuç gönderilmez; sonuç yalnızca takvimde görünür.
 24. Liste başlıkları "1) Anki", "2) ANA 1 test" biçiminde yazılır (Ali 12 Kasım'da istedi).
+25. Ders takibi artık AWorld sayfasından okunur (Kurul 2 Takip kaldırıldı, 14 Kasım). Araç AWorld'e hiçbir şey yazmaz (Ali 14 Kasım'da hatırlattı).
+26. "Slayt okundu" = AWorld Dersler sekmesindeki kutu. "Test bitti" = o dersin AWorld'deki bütün soruları çözülmüş; sorusu olmayan derste "çözüldü sayıldı" işareti. Okunmuş ama soruları bitmemiş ders listeye "test" olarak girer.
+27. Haftalık havuz AWorld'de yok; her zaman en eski okunmamışlara bakılır.

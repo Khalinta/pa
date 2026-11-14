@@ -12,7 +12,8 @@ Tek işi var: her akşam 20:50'de yarını hazırlamak.
 - `planla.py` — kararları veren program. En üstündeki AYARLAR bölümünde kalkış saati, süreler, çalışma yeri gibi sabitler durur.
 - `GOREV.md` — akşam açılan Claude oturumunun izlediği adımlar.
 - `KARARLAR.md` — kurarken verilen kararlar.
-- `test_planla.py`, `test_verisi/` — programın doğru çalıştığını sınayan denemeler.
+- `aworld_cevir.py` — AWorld sayfasından okunan ders takibini programın anladığı biçime çevirir.
+- `test_planla.py`, `test_aworld_cevir.py`, `test_verisi/` — programın doğru çalıştığını sınayan denemeler.
 
 ## Elle deneme (takvime yazmaz)
 
